@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ... -->
+    <style>
+      /* ... */
+      .new-section {
+        background-color: #f9f9f9;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .book-card {
+        /* Add your book card styles here */
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ... -->
+    <div class="col-md-9 main-content">
+      <div class="container">
+        <h2>My Books</h2>
+        <button id="add-book-btn">Add Book</button>
+        <section id="book-list"></section>
+
+        <!-- New div section -->
+        <div class="new-section">
+          <h3>Add a New Book</h3>
+          <form id="add-book-form">
+            <div class="form-group">
+              <label for="title">Title:</label>
+              <input type="text" id="title" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="author">Author:</label>
+              <input type="text" id="author" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="coverImage">Cover Image:</label>
+              <input
+                type="file"
+                id="coverImage"
+                class="form-control-file"
+                accept="image/*"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Book</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- ... -->
+    <script>
+      // ...
+      const addBookForm = document.getElementById("add-book-form");
+      addBookForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const title = document.getElementById("title").value;
+        const author = document.getElementById("author").value;
+        const coverImageInput = document.getElementById("coverImage");
+        const coverImageFile = coverImageInput.files[0];
+
+        // Create a new FormData object
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("author", author);
+        formData.append("coverImage", coverImageFile);
+
+        // Send the form data to the server (replace with your server endpoint)
+        fetch("your-server-endpoint", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const newBook = {
+              title: data.title,
+              author: data.author,
+              coverImage: data.coverImage,
+            };
+            books.push(newBook);
+
+            // Dynamically generate the book card and add it to the book list section
+            const bookCard = document.createElement("div");
+            bookCard.classList.add("book-card");
+            bookCard.innerHTML = `
+            <img src="${newBook.coverImage}" alt="${newBook.title}" />
+            <h3>${newBook.title}</h3>
+            <p>By: ${newBook.author}</p>
+            <button class="btn btn-danger remove-btn">Remove</button>
+            <button class="btn btn-info progress-btn">Check Progress</button>
+          `;
+            bookList.appendChild(bookCard);
+
+            // Clear form inputs
+            document.getElementById("title").value = "";
+            document.getElementById("author").value = "";
+            coverImageInput.value = "";
+
+            // Add event listeners to the remove and progress buttons
+            const removeBtn = bookCard.querySelector(".remove-btn");
+            removeBtn.addEventListener("click", () => {
+              // Remove the book from the books array
+              const index = books.indexOf(newBook);
+              if (index !== -1) {
+                books.splice(index, 1);
+              }
+
+              // Remove the book card from the DOM
+              bookCard.remove();
+            });
+
+            const progressBtn = bookCard.querySelector(".progress-btn");
+            progressBtn.addEventListener("click", () => {
+              // Check the progress of the book (replace with your logic)
+              alert(`Progress for ${newBook.title}: 75%`);
+            });
+          });
+      });
+
+      // ...
+      books.forEach((book) => {
+        const bookCard = document.createElement("div");
+        bookCard.classList.add("book-card");
+        bookCard.innerHTML = `
+          <img src="${book.coverImage}" alt="${book.title}" />
+          <h3>${book.title}</h3>
+          <p>By: ${book.author}</p>
+          <button class="btn btn-danger remove-btn">Remove</button>
+          <button class="btn btn-info progress-btn">Check Progress</button>
+        `;
+        bookList.appendChild(bookCard);
+
+        const removeBtn = bookCard.querySelector(".remove-btn");
+        removeBtn.addEventListener("click", () => {
+          // Remove the book from the books array
+          const index = books.indexOf(book);
+          if (index !== -1) {
+            books.splice(index, 1);
+          }
+
+          // Remove the book card from the DOM
+          bookCard.remove();
+        });
+
+        const progressBtn = bookCard.querySelector(".progress-btn");
+        progressBtn.addEventListener("click", () => {
+          // Check the progress of the book (replace with your logic)
+          alert(`Progress for ${book.title}: 75%`);
+        });
+      });
+      // ...
+    </script>
+  </body>
+</html>
