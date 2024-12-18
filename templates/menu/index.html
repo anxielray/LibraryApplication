@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropdown Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="menu-container">
+    <!-- Three-dot menu icon -->
+    <div class="menu-icon" onclick="toggleMenu()">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Dropdown menu -->
+    <div class="dropdown-menu" id="dropdownMenu">
+      <div class="menu-item" onclick="handleAction('Track')">
+        <span>📈</span> Track
+      </div>
+      <div class="menu-item" onclick="handleAction('Edit')">
+        <span>✏️</span> Edit
+      </div>
+      <div class="menu-item" onclick="handleAction('Remove')">
+        <span>🗑️</span> Remove
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
