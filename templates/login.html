@@ -42,17 +42,19 @@
           <h2 class="header" style="font-weight: 600">Login</h2>
           <img src="arfavicon.png" alt="" />
         </div>
-        <form action="/">
+        <form action="/login" method="POST">
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" required />
+            <input type="text" class="form-control" id="username" value="Anxiel"  name="username" required />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
             <input
               type="password"
-              class="form-control"
               id="password"
+		class="form-control"
+		value="I@archives"
+		name="password"
               required
             />
           </div>
