@@ -11,9 +11,28 @@ import (
 )
 
 func main() {
+
+	//open the files in the directory data
+	Userfile, err := os.Open("../data/users.txt")
+	if err != nil {
+		log.Fatalf("failed to open file: %s", err)
+	}
+
+	Membersfile, err := os.OpenFile("../data/members.txt", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+
 	// Serve the login form
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../templates/login.html")
+	})
+
+	//serve the registration page
+	// Serve the login form
+	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "../templates/registration.html")
 	})
 
 	// Handle the dashboard route
@@ -49,13 +68,7 @@ func main() {
 		var us, psw string
 
 		// Validate the credentials
-		file, err := os.Open("../data/users.txt")
-		if err != nil {
-			log.Fatalf("failed to open file: %s", err)
-		}
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
+		scanner := bufio.NewScanner(Userfile)
 		authenticated := false
 
 		for scanner.Scan() {
@@ -78,58 +91,92 @@ func main() {
 		}
 
 		if authenticated {
-
+			fmt.Println("Authenticated")
 			// Redirect to the dashboard on successful login
 			http.Redirect(w, r, "/dashboard", http.StatusMovedPermanently)
 		} else {
+			fmt.Println(username)
 
-			// If authentication fails, show an error message
-			fmt.Fprintf(w, "Invalid username or password.\n")
+			// If authentication fails
+			fmt.Fprintf(w, "Invalid username or password. Try loggin in.\n")
 		}
 	})
 
 	//Handle registration
 	http.HandleFunc("/registration", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "../templates/registration.html")
-		username := r.FormValue("username")
-		email := r.FormValue("email")
-		password := r.FormValue("password")
-		if credentialExists(username) {
-			fmt.Println("User Exists!")
-		} else {
-			file, err := os.Open("../data/members.txt")
-			if err != nil {
-				fmt.Println(err)
-			}
-			defer file.Close()
-			userData := fmt.Sprintf("u-%s e-%s p-%s\n", username, email, password)
-			_, err = file.WriteString(userData)
-			if err != nil {
-				fmt.Println(err)
-			}
-			fmt.Println("A user was added")
-			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		if r.Method == http.MethodGet {
+			// Serve the registration page
+			http.ServeFile(w, r, "../templates/registration.html")
+			return
 		}
+
+		if r.Method == http.MethodPost {
+			// Parse form data
+			if err := r.ParseForm(); err != nil {
+				http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+				return
+			}
+
+			username := r.FormValue("username")
+			email := r.FormValue("email")
+			password := r.FormValue("password")
+
+			// Validate form inputs
+			if username == "" || email == "" || password == "" {
+				http.Error(w, "All fields are required", http.StatusBadRequest)
+				return
+			}
+
+			// Check if the username already exists
+			if CredentialExists(username) {
+				http.Error(w, fmt.Sprintf("Username %s is already taken. Please choose another.", username), http.StatusConflict)
+				return
+			}
+
+			// Add user data to the members file
+			userData := fmt.Sprintf("u-%s e-%s p-%s\n", username, email, password)
+			fmt.Println(userData)
+
+			_, err := Membersfile.WriteString(userData)
+			if err != nil {
+				http.Error(w, "Failed to save user data", http.StatusInternalServerError)
+				return
+			}
+
+			// Add user to the system
+			if AddUser(username, password) {
+				
+				// Redirect to the home page
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+			} else {
+				http.Error(w, "Failed to add user to the system", http.StatusInternalServerError)
+			}
+			return
+		}
+
+		// Handle unsupported methods
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	})
 
 	fmt.Println("Server is running on localhost:9999")
 	if err := http.ListenAndServe(":9999", nil); err != nil {
 		log.Fatal(err)
 	}
+
+	defer Userfile.Close()
+	defer Membersfile.Close()
 }
 
-func credentialExists(credential string) bool {
+func CredentialExists(credential string) bool {
 	file, err := os.Open("../data/users.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer file.Close()
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
 		line := scanner.Text()
 		u := strings.Split(line, " ")[0][2:]
-		//			p := strings.Split(line, " ")[1][2:]
 		if credential == u {
 			return true
 		}
@@ -138,4 +185,20 @@ func credentialExists(credential string) bool {
 		log.Fatalf("error reading file: %s", err)
 	}
 	return false
+}
+
+func AddUser(username, password string) bool {
+	file, err := os.OpenFile("../data/users.txt", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(fmt.Sprintf("u-%s p-%s\n", username, password))
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	return true
 }
