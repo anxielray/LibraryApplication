@@ -3,7 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login and Registration Pages</title>
+    <title>Registration - AnxArchives</title>
+    <!-- Favicon for all browsers -->
+    <link rel="icon" type="image/x-icon" href="https://pbs.twimg.com/media/GfbwIUvWEAMe7d6?format=jpg&name=900x900" >
+    <link rel="icon"  type="image/png" href="https://pbs.twimg.com/media/GfbwIUvWEAMe7d6?format=jpg&name=900x900" >
+
+    <!-- For modern browsers (SVG support) -->
+    <link rel="icon" type="image/svg+xml" href="https://pbs.twimg.com/media/GfbwIUvWEAMe7d6?format=jpg&name=900x900">
+
+    <!-- For Apple devices -->
+    <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/GfbwIUvWEAMe7d6?format=jpg&name=900x900" sizes="180x180">
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -46,14 +55,14 @@
           <h2 class="header">Register</h2><img src="arfavicon.png" alt="" />
         </div>
 
-        <form>
+        <form action="/register" method="POST" >
           <div class="form-group">
             <label for="regUsername">Username</label>
-            <input type="text" class="form-control" id="regUsername" required />
+            <input type="text" class="form-control" id="regUsername" name="usernamae" required />
           </div>
           <div class="form-group">
             <label for="regEmail">Email address</label>
-            <input type="email" class="form-control" id="regEmail" required />
+            <input type="email" class="form-control" id="regEmail" name="email"  required />
           </div>
           <div class="form-group">
             <label for="regPassword">Password</label>
@@ -61,6 +70,7 @@
               type="password"
               class="form-control"
               id="regPassword"
+              name="password"
               required
             />
           </div>
@@ -77,12 +87,18 @@
             Register
           </button>
           <div class="text-center mt-3">
-            <p>Already have an account? <a href="login.html">Login here</a></p>
+            <a href="/" id="to-register" ><p>Already have an account?</p></a>
           </div>
         </form>
       </div>
     </div>
 
+    <script>
+     document.getElementById("to-register").onclick = function() {
+            const newUrl = "/"; // Desired URL
+            window.history.replaceState({}, '', newUrl); // Change the URL without reloading
+        };
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

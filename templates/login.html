@@ -69,15 +69,20 @@
           </div>
           <button type="submit" class="btn btn-primary btn-block">Login</button>
           <div class="text-center mt-3">
-            <p>
-              Don't have an account?
-              <a href="registration.html">Register here</a>
-            </p>
+              <a href="/registration" id="toRegistration-button" >
+               <p>Don't have an account?</p>
+             </a>
           </div>
         </form>
       </div>
     </div>
 
+    <script>
+     document.getElementById("toRegistration-button").onclick = function() {
+            const newUrl = "/registration"; // Desired URL
+            window.history.replaceState({}, '', newUrl); // Change the URL without reloading
+        };
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
