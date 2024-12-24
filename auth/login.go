@@ -58,7 +58,6 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 		// Redirect to the dashboard on successful login
 		http.Redirect(w, r, "/dashboard", http.StatusMovedPermanently)
 	} else {
-		fmt.Println(username)
 
 		// If authentication fails
 		fmt.Fprintf(w, "Invalid username or password. Try loggin in.\n")

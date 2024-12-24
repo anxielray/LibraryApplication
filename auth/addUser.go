@@ -6,7 +6,7 @@ import (
 )
 
 func AddUser(username, password string) bool {
-	file, err := os.OpenFile("data/users.txt", os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile("auth/data/users.txt", os.O_APPEND|os.O_WRONLY, 0o644)
 	if err != nil {
 		fmt.Println(err)
 		return false

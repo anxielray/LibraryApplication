@@ -9,7 +9,6 @@ import (
 func FileData() (*os.File, *os.File) {
 
 	//open the files in the directory data
-	fmt.Println("Could not open data/users.txt")
 	Userfile, err := os.Open("auth/data/users.txt")
 	if err != nil {
 		log.Fatalf("failed to open file: %s", err)
