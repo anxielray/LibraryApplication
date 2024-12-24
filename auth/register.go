@@ -55,7 +55,7 @@ func HandleRegistration(w http.ResponseWriter, r *http.Request) {
 		if AddUser(username, password) {
 
 			// Redirect to the home page
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			http.Redirect(w, r, "/signin", http.StatusSeeOther)
 		} else {
 			http.Error(w, "Failed to add user to the system", http.StatusInternalServerError)
 		}
