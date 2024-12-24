@@ -12,11 +12,17 @@ import (
 )
 
 func main() {
-	// Serve the login form
+	// Serve homepage
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "templates/index.html")
+	})
+	
+	// Serve the login form
+	http.HandleFunc("/signin", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "templates/login.html")
 	})
 	http.HandleFunc("/login", auth.HandleLogin)
+		
 
 	// serve the registration form
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +32,7 @@ func main() {
 
 	// Handle the dashboard route
 	http.HandleFunc("/dashboard", func(w http.ResponseWriter, r *http.Request) {
-		t, err := template.ParseFiles("templates/index.html")
+		t, err := template.ParseFiles("templates/dashboard.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
