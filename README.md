@@ -105,7 +105,7 @@ See [CHANGELOG.md](CHANGELOG.md) for a list of changes and version history.
 ## 📞 Contact
 
 - Project Maintainer: Anxiel Archives Team
-- Twitter: [@Anxiel](https://twitter.com/Anxiel)
+- Twitter: [@Anxiel](https://twitter.com/AnxielW)
 - Email: contact@anxielarchives.com
 
 ## 🔗 Links
