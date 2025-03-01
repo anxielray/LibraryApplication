@@ -19,6 +19,8 @@ Please include the following information in your report:
 - Proof-of-concept or exploit code if possible
 - Impact of the issue
 
+Please report security vulnerabilities through our [Security Issue Form](https://github.com/anxielray/LibraryApplication/security/advisories/new)
+
 ## Security Update Process
 
 1. The security team will acknowledge receipt of your vulnerability report

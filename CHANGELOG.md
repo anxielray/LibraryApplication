@@ -40,5 +40,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile system
 - Book club features
 
-[Unreleased]: https://github.com/yourusername/anxiel-archives/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/yourusername/anxiel-archives/releases/tag/v1.0.0 
+[Unreleased]: https://github.com/anxielray/LibraryApplication/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/anxielray/LibraryApplication/releases/tag/v1.0.0 

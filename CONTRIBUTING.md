@@ -101,4 +101,6 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 
 Don't hesitate to ask questions about the contribution process. We want to make it as easy as possible for people to contribute to Anxiel Archives.
 
-Thank you for contributing! 🎉 
+Thank you for contributing! 🎉
+
+Project Link: [https://github.com/anxielray/LibraryApplication](https://github.com/anxielray/anxiel-archives) 
